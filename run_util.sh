@@ -34,8 +34,14 @@ FLAGS=(
     # Time
     -v /etc/timezone:/etc/timezone:ro
     -v /etc/localtime:/etc/localtime:ro
-    # Misc
+    # Display
     # -e "TERM=${TERM:-xterm-256color}"
+    -e DISPLAY="${DISPLAY:-:0}"
+    # Misc
+    -v /var/log:/var/log:ro
+    # X11 forwarding
+    -e QT_X11_NO_MITSHM=1
+    -v /tmp/.X11-unix:/tmp/.X11-unix:rw
 )
 
 # Run

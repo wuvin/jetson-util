@@ -108,11 +108,34 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
+# X11 / GUI support (for forwarding GUI apps to host display)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libx11-6 \
+    libxext6 \
+    libxrender1 \
+    libxtst6 \
+    libxi6 \
+    libxcb1 \
+    libxcb-xinerama0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-randr0 \
+    libxcb-render-util0 \
+    libxcb-shape0 \
+    libxcb-xfixes0 \
+    libxkbcommon0 \
+    libxkbcommon-x11-0 \
+    libfontconfig1 \
+    libfreetype6 \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libdbus-1-3 \
+    x11-utils \
+    dbus-x11 \
+    && rm -rf /var/lib/apt/lists/*
 
-
-# --------------------------------------------------------------------------
 # Symlinks for tools that install under non-obvious names
-# --------------------------------------------------------------------------
 RUN ln -sf /usr/bin/fdfind /usr/local/bin/fd
 
 # Shell defaults
