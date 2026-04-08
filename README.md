@@ -30,6 +30,7 @@ JP: 6.x
 | **Networking**          | nmcli, ip, ping, traceroute, dig, nmap, iperf3, tcpdump, socat     |
 | **Monitoring**          | htop, iotop, sysstat (sar/mpstat/iostat), lsof, strace             |
 | **Disk / Filesystem**   | parted, fdisk, e2fsprogs, ntfs-3g, exfat, smartctl, hdparm         |
+| **GUI / Robotics**      | DYNAMIXEL Wizard 2.0 (ARM64), X11 libs                             |
 | **Misc**                | git, jq, bc, file, xxd                                             |
 
 ## Host Filesystem Access
@@ -74,6 +75,27 @@ nmcli connection show
 tcpdump -i eth0 -c 50
 ```
 
+## DYNAMIXEL Wizard 2.0
+ 
+The container should include the ARM64 build of DYNAMIXEL Wizard 2.0,
+provided by Robotis. To build, download the Linux ARM64 installer from
+Robotis's URL at https://www.robotis.com/service/download.php?no=2233.
+Place `DynamixelWizard2Setup-linux-arm64.run` in the working directory.
+
+After building, to run:
+ 
+```bash
+dynamixel-wizard
+```
+ 
+U2D2 or other serial adapters should already be visible.  If the Wizard
+cannot find the serial port, verify visibility visible inside the
+container:
+ 
+```bash
+ls /dev/ttyUSB* /dev/ttyACM*
+```
+
 ## Notes
 
 - **`--privileged` + `--pid host`**: Required for `iotop`, `strace`,
@@ -83,3 +105,9 @@ tcpdump -i eth0 -c 50
   installed at runtime. Add them to Dockerfile instead.
 - **No GPU passthrough**: This container is for maintenance, not compute.
   No ROS 2, SLAM, or other related pipeline available.
+- **X11 forwarding**: Run script calls `xhost +local:docker` and passes
+  `DISPLAY` + `/tmp/.X11-unix` into the container. If headless over SSH,
+  use `ssh -X` or `ssh -Y` to forward display back to workstation.
+- **Dynamixel Wizard installer**: The `.run` installer should be
+  downloaded before build time if Wizard GUI is desired.  It also
+  requires network access.
