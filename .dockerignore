@@ -1,4 +1,0 @@
-# Ignore everything by default
-*
-# Allow only the Dynamixel Wizard installer
-!DynamixelWizard2Setup-linux-arm64.run

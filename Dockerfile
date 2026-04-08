@@ -134,33 +134,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     x11-utils \
     dbus-x11 \
     && rm -rf /var/lib/apt/lists/*
-
-# DYNAMIXEL Wizard 2.0
-    # Download the ARM64 installer from a browser and place in build
-    # context directory.  ROBOTIS's server has weak DH keys rejected by
-    # OpenSSL 3.x.  https://www.robotis.com/service/download.php?no=2233
-ARG DXL_WIZARD_RUN="DynamixelWizard2Setup-linux-arm64.run"
- 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libusb-1.0-0 \
-    udev \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY . /tmp/build-context/
-RUN if [ -f "/tmp/build-context/${DXL_WIZARD_RUN}" ]; then \
-        chmod +x "/tmp/build-context/${DXL_WIZARD_RUN}" \
-        && "/tmp/build-context/${DXL_WIZARD_RUN}" --accept-licenses \
-            --default-answer \
-            --confirm-command \
-            --root /opt/DynamixelWizard2 \
-            install \
-        && ln -sf /opt/DynamixelWizard2/DynamixelWizard2.sh \
-                  /usr/local/bin/dynamixel-wizard \
-        && echo ">>> Dynamixel Wizard 2.0 installed"; \
-    else \
-        echo ">>> Dynamixel Wizard 2.0 (${DXL_WIZARD_RUN}) not found"; \
-    fi \
-    && rm -rf /tmp/build-context
     
 # Symlinks for tools that install under non-obvious names
 RUN ln -sf /usr/bin/fdfind /usr/local/bin/fd
