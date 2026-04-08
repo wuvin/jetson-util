@@ -2,6 +2,7 @@
 set -euo pipefail
 # run_util.sh — launch for util container
 
+IMAGE_NAME="jetson-util"
 CONTAINER_NAME="util"
 
 # Remove stale container with same name if it exists
