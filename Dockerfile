@@ -135,6 +135,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     dbus-x11 \
     && rm -rf /var/lib/apt/lists/*
 
+# DYNAMIXEL Wizard 2.0
+ARG DXL_WIZARD_URL="https://www.robotis.com/service/download.php?no=2233"
+ 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libusb-1.0-0 \
+    udev \
+    && rm -rf /var/lib/apt/lists/*
+ 
+RUN curl -fSL -o /tmp/DynamixelWizard2Setup.run "${DXL_WIZARD_URL}" \
+    && chmod +x /tmp/DynamixelWizard2Setup.run \
+    && /tmp/DynamixelWizard2Setup.run --accept-licenses \
+        --default-answer \
+        --confirm-command \
+        --root /opt/DynamixelWizard2 \
+        install \
+    && rm -f /tmp/DynamixelWizard2Setup.run \
+    && ln -sf /opt/DynamixelWizard2/DynamixelWizard2.sh \
+              /usr/local/bin/dynamixel-wizard
+    
 # Symlinks for tools that install under non-obvious names
 RUN ln -sf /usr/bin/fdfind /usr/local/bin/fd
 
