@@ -39,9 +39,9 @@ any file on Jetson:
 
 ```bash
 # Inside container
-ls /host/etc/nv_tegra_release  # Jetson info
-ncdu /host/home                # info on disk space
-7z a /host/tmp/dataset.7z /host/home/user/data/  # archive a dataset
+cat /etc/nv_tegra_release  # Jetson info
+ncdu /home/num4            # info on disk space
+7z a /home/num4/bak/dataset.7z /home/num4/dataset/  # archive a dataset
 ```
 
 `/home`, `/media`, `/mnt`, and `/tmp` are also mounted at their expected
@@ -54,13 +54,13 @@ speed on Orin NX (8-core), consider `pigz` (gzip) and `pbzip2` (bzip2):
 
 ```bash
 # 7zip with LZMA2, 8 threads, split into 4 GB volumes
-7z a -t7z -m0=lzma2 -mx=7 -mmt=8 -v4g /host/tmp/archive.7z /host/data/
+7z a -t7z -m0=lzma2 -mx=7 -mmt=8 -v4g bak/data.7z data/
 
 # Fast tarball with parallel gzip
-tar cf - /host/data/ | pigz -p 8 > /host/tmp/archive.tar.gz
+tar cvf - /home/num4/data/ | pigz -p 8 > /home/num4/bak/data.tar.gz
 
-# Zstandard — excellent speed/ratio tradeoff
-tar cf - /host/data/ | zstd -T8 -o /host/tmp/archive.tar.zst
+# Faster zstandard (speed/ratio tradeoff)
+tar cvf - /home/num4/data/ | zstd -T8 -o /home/num4/bak/data.tar.zst
 ```
 
 ## Networking
